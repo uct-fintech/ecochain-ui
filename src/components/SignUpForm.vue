@@ -124,12 +124,13 @@ export default {
 					// Handle the response from the backend here
 					console.log('Response from backend:', response.data);
 
-					if (response.data.success) {
-                        console.log("Attempting redirect...")
-                        this.$router.push('/dashboard');
-                    } else {
-                        console.error('Register failed:', response.data.message);
-                    }
+					if (response.data.access_token) {
+						localStorage.setItem('access_token', response.data.access_token);
+						console.log("Attempting redirect...");
+						this.$router.push('/dashboard');
+					} else {
+						console.error('Register failed:', response.data.message);
+					}
 				} catch (error) {
 					console.error('Error:', error);
 					// Handle errors here

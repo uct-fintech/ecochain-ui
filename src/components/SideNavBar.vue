@@ -28,7 +28,7 @@ export default {
 		return {
 			menuItems: [
 				{ label: 'Dashboard', link: '/dashboard' },
-				{ label: 'Create New Report', link: '/CreateNewReport' },
+				{ label: 'Create New Report', link: '/CreateNewReport', action: this.newReport },
 				{ label: 'Log Out', link: '/', action: this.logout }
 
 			]
@@ -52,6 +52,23 @@ export default {
 				menuItem.action();
 			} else {
 				this.$router.push(menuItem.link);
+			}
+		},
+
+		async newReport() {
+			try {
+				const token = localStorage.getItem('access_token');
+				const headers = {
+					'Authorization': 'Bearer ' + token
+				};
+
+				const response = await axios.get(config.backendApiUrl.concat("/start_submission"), { headers: headers });
+				console.log('Response from backend:', response.data);
+				const submissionId = response.data.submission_id;
+				this.$router.push({ name: 'CreateNewReport', params: { id: submissionId } });
+			} catch (error) {
+				console.error("Error fetching data:", error);
+				// handle the error, e.g., show a user-friendly message or retry the request
 			}
 		}
 	}
