@@ -410,7 +410,7 @@ export default {
         const response = await axios.post(config.backendApiUrl.concat("/trans/" + this.$route.query.submissionID), {}, { headers: headers });
 
         if (response.data.success) {
-          this.$router.push({ name: 'SuccessPage' });
+            this.$router.push({ name: 'SuccessPage',query: { submissionID: this.$route.query.submissionID } });
         } else {
           alert(`Error: ${response.data.message}`);
         }

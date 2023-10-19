@@ -19,7 +19,7 @@
 
         <v-row class="mt-3">
           <v-col cols="6">
-            <a href="https://testnet.algoexplorer.io/tx/{{transaction_id}}" target="_blank" style="text-decoration: none;">
+            <a :href="transactionLink" target="_blank" style="text-decoration: none;">
               <v-btn block color="#219653" class="text-none" variant="outlined">
                 View Submission
               </v-btn>
@@ -28,8 +28,8 @@
 
           </v-col>
           <v-col cols="6">
-            <a href = "https://testnet.algoexplorer.io/asset/{{nft_id}}"  target="_blank" style="text-decoration: none;">
-            <v-btn block color="#219653" class="text-none" variant="outlined">
+              <a :href="nftUrl" target="_blank" style="text-decoration: none;">
+              <v-btn block color="#219653" class="text-none" variant="outlined">
               View NFT
             </v-btn>
             </a>
@@ -57,7 +57,10 @@ export default {
   data() {
     return {
       transaction_id: '',
-      nft_id: ''
+      nft_id: '',
+      transactionLink:'',
+      nftUrl:''
+      
     }
   },
   mounted() {
@@ -71,11 +74,14 @@ export default {
 					'Authorization': 'Bearer ' + token
 				};
 
-				const response = await axios.get(config.backendApiUrl.concat("/get_success_page"), { headers: headers });
+				const response = await axios.get(config.backendApiUrl.concat("/get_success_page/"+this.$route.query.submissionID), { headers: headers });
 
 				if (response.data.success) {
 					this.transaction_id = response.data.transaction_id;
 					this.nft_id = response.data.nft_id;
+          this.nftUrl = 'https://testnet.algoexplorer.io/asset/'+this.nft_id;
+          this.transactionLink ='https://testnet.algoexplorer.io/tx/'+this.transaction_id;
+
 				} else {
 					console.error('Error fetching transaction data');
 				}
