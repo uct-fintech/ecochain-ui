@@ -203,43 +203,6 @@ export default {
         };
       }
     },
-    async fetchDashboardData() {
-      try {
-        const token = localStorage.getItem('access_token');
-        const headers = {
-          'Authorization': 'Bearer ' + token
-        };
-
-        const response = await axios.get(config.backendApiUrl.concat("/get_dashboard"), { headers: headers });
-
-        if (response.data.success) {
-          this.name = response.data.name;
-          this.email = response.data.email;
-          this.algo_add = response.data.algo_add;
-          this.submissions = response.data.submissions;
-          this.location = response.data.location;
-          this.industry = response.data.industry;
-          this.size = response.data.size;
-          this.description = response.data.description;
-        } else {
-          console.error('Error fetching dashboard data');
-        }
-      } catch (error) {
-        console.error('There was an error fetching the data', error);
-      }
-    },
-    async createNewReport() {
-      const token = localStorage.getItem('access_token');
-      const headers = {
-        'Authorization': 'Bearer ' + token
-      };
-
-      const response = await axios.get(config.backendApiUrl.concat("/start_submission"), { headers: headers });
-      if (response.data.success) {
-        this.SubmissionID = response.data.submission_id;
-        this.$router.push('/CreateNewReport');
-      }
-    },
     onSubmitButtonClick(event) {
       event.preventDefault();
       this.onComplete();
