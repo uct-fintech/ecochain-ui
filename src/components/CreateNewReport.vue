@@ -34,13 +34,13 @@
             <tbody>
               <tr>
                 <td class="review-cell">Company</td>
-                <td class="review-cell">[Name of Company]</td>
+                <td class="review-cell">{{ company }}</td>
                 <td class="review-cell">Submitted by</td>
-                <td class="review-cell">[Name of Submitter]</td>
+                <td class="review-cell">{{ full_name }}</td>
               </tr>
               <tr>
                 <td class="review-cell">Submission Period</td>
-                <td colspan="3" class="review-cell">01 May 2022 - 30 April 2023</td>
+                <td colspan="3" class="review-cell">{{ formattedPeriod }}</td>
               </tr>
               <tr>
                 <td colspan="4"><br>
@@ -148,6 +148,10 @@ export default {
   data() {
 
     return {
+      company: '',
+      full_name: '',
+      start_period: null,
+      end_period: null,
       diversityInclusion: '',
       payEquality: '',
       wageLevel: '',
@@ -174,6 +178,16 @@ export default {
       shareBuybacksDividends: '',
 
     };
+  },
+  computed: {
+    formattedPeriod() {
+      if (this.start_period && this.end_period) {
+        const startDate = new Date(this.start_period).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+        const endDate = new Date(this.end_period).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+        return `${startDate} - ${endDate}`;
+      }
+      return '';
+    }
   },
 
   methods: {
@@ -436,10 +450,11 @@ export default {
           this.saveGovernanceMetrics();
           break;
         case 3: // Planet tab
-          this.savePlanetMetrics()
+          this.savePlanetMetrics();
           break;
         case 4: // Prosperity tab
-          this.saveProsperityMetrics()
+          this.saveProsperityMetrics();
+          this.fetchSubmissionData();
           break;
         case 5: // Review and Submit tab
 
@@ -455,7 +470,28 @@ export default {
         return;
       }
 
-    }
+    },
+    async fetchSubmissionData() {
+      const token = localStorage.getItem('access_token');
+      const headers = {
+        'Authorization': 'Bearer ' + token
+      };
+      
+      try {
+        const response = await axios.get(config.backendApiUrl.concat("/get_submission/" + this.$route.query.submissionID), { headers: headers });
+        
+        if (response.data.success) {
+          this.company = response.data.company;
+          this.full_name = response.data.full_name;
+          this.start_period = response.data.start_period;
+          this.end_period = response.data.end_period;
+        } else {
+          console.error('Error fetching submission data:', response.data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching submission data:', error.message);
+      }
+    },
   }
 };
 
