@@ -58,7 +58,6 @@
 							<td>Submitter</td>
 							<td>Submission Date</td>
 							<td>Status</td>
-							<td>Total Score</td>
 							<td></td>
 						</tr>
 						<tr v-for="submission in submissions" :key="submission.SubmissionID">
@@ -67,7 +66,6 @@
 							<td>{{ submission.FirstName }} {{ submission.LastName }}</td>
 							<td>{{ new Date(submission.Date).toLocaleDateString() }}</td>
 							<td>{{ getStatusText(submission.Status) }}</td>
-							<td>{{ submission.Score !== null ? submission.Score.toFixed(2) : 'NA' }}</td>
 							<td>
 								<v-btn v-if="submission.Status === 0" color="green">Continue</v-btn>
 								<v-btn v-else color="blue">View Details</v-btn>
