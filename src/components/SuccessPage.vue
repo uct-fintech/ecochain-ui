@@ -20,8 +20,8 @@
         <v-row class="mt-3">
           <v-col cols="6">
             <a :href="transactionLink" target="_blank" style="text-decoration: none;">
-              <v-btn block color="#219653" class="text-none" variant="outlined">
-                View Submission
+              <v-btn block color="blue" class="text-none">
+                View Transaction
               </v-btn>
             </a>
 
@@ -29,7 +29,7 @@
           </v-col>
           <v-col cols="6">
               <a :href="nftUrl" target="_blank" style="text-decoration: none;">
-              <v-btn block color="#219653" class="text-none" variant="outlined">
+              <v-btn block color="blue" class="text-none">
               View NFT
             </v-btn>
             </a>
