@@ -408,13 +408,6 @@ export default {
       console.log("in submitting")
       // Check the checkbox before proceeding
       this.verifyCheckboxBeforeSubmit();
-      if (!this.canSubmit) {
-        if (!this.checkbox) {
-          return alert('Please tick the checkbox before proceeding.');
-        }
-
-      }
-
       const token = localStorage.getItem('access_token');
       const headers = {
         'Authorization': 'Bearer ' + token
