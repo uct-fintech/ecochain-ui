@@ -88,40 +88,45 @@ export default {
             return this.metrics.map((_, index) => (index === 0 ? '%' : '#'));
         },
 
-    sectionStatus() {
-      if (this.metrics.every(item => item.isApplicable)) {
-        return 'Complete';
-      } else if (this.metrics.every(item => !item.isApplicable)) {
-        return 'Not Applicable';
-      } else {
-        return 'Partial';
-      }
-    },
-    },
-
-    watch: {
-        // Use watch to detect when allApplicable changes
-        allApplicable(newValue) {
-            const applicable = newValue === 'false'
-            this.metrics.forEach(item => (item.isApplicable = applicable))
+        sectionStatus() {
+            if (this.metrics.every(item => item.isApplicable)) {
+                return 'Complete';
+            } else if (this.metrics.every(item => !item.isApplicable)) {
+                return 'Not Applicable';
+            } else {
+                return 'Partial';
+            }
         },
     },
 
+    watch: {
+        allApplicable(newValue) {
+            const applicable = newValue === 'false';
+            this.metrics.forEach(item => (item.isApplicable = applicable));
+        },
+        metrics: {
+            deep: true,
+            handler() {
+                this.updateGovernanceMetricsToParent();
+            }
+        },
+    },
 
     methods: {
         handleSwitchChange(item, index) {
             if (!item.isApplicable) {
                 this.metrics[index].scoringAchieved = '';
             }
+        },
+        
+        updateGovernanceMetricsToParent() {
+            this.$emit('updateGovernanceMetrics', this.metrics);
+            console.log(this.metrics);
         }
     }
-
-
-
-
 }
 </script>
-  
+
 <style scoped>
 .scrollable-table {
     max-height: 400px;

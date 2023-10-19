@@ -53,7 +53,6 @@
 </template>
   
 <script>
-
 export default {
   name: 'PlanetPage',
 
@@ -79,7 +78,6 @@ export default {
           isApplicable: true,
           scoringAchieved: '',
         },
-
         {
           name: 'Nature loss',
           Metric: 'Land use and ecological sensitivity',
@@ -105,10 +103,15 @@ export default {
     },
   },
   watch: {
-    // Use watch to detect when allApplicable changes
     allApplicable(newValue) {
       const applicable = newValue === 'false'
       this.metrics.forEach(item => (item.isApplicable = applicable))
+    },
+    metrics: {
+      deep: true,
+      handler() {
+        this.saveMetricsToParent();
+      }
     },
   },
 
@@ -117,13 +120,17 @@ export default {
       if (!item.isApplicable) {
         this.metrics[index].scoringAchieved = '';
       }
+    },
+    saveMetricsToParent() {
+      this.$emit('updatePlanetMetrics', this.metrics);
+      console.log(this.metrics)
+      console.log(this.metrics);
+
     }
   }
-
-
-
 }
 </script>
+
   
 <style scoped>
 @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");

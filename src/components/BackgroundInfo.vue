@@ -46,36 +46,46 @@
   </v-container>
 </template>
 
-
 <script>
 export default {
   data() {
     return {
       firstName: '',
       lastName: '',
-      email: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
       startDate: null,
       endDate: null,
-     
     };
   },
   methods: {
-    submitForm() {
-      console.log('Form Submitted!', {
+     saveDataToParent() {
+      // Emitting the data to the parent or any other action you'd like
+      this.$emit('updateData', {
         firstName: this.firstName,
         lastName: this.lastName,
-        email: this.email,
         startDate: this.startDate,
         endDate: this.endDate
       });
-    }, 
-
-    
-  }
+      console.log({
+        firstName: this.firstName,
+        lastName: this.lastName,
+        startDate: this.startDate,
+        endDate: this.endDate
+      });
+    }
+  },
+  watch: {
+    firstName() {
+      this.saveDataToParent();
+    },
+    lastName() {
+      this.saveDataToParent();
+    },
+    startDate() {
+      this.saveDataToParent();
+    },
+    endDate() {
+      this.saveDataToParent();
+    },
+  },
 };
 </script>
-

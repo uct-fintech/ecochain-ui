@@ -122,7 +122,7 @@ export default {
                         name: this.Organisation_name
                     });
 
-                    console.log('Response from backend:', response.data);
+                    console.log('Response from backend:*********', response.data);
 
                     if (response.data.success) {
 						localStorage.setItem('access_token', response.data.access_token);

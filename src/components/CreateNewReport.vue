@@ -8,19 +8,19 @@
 
       <div class="form-wizard-container">
         <TabContent title="Submission Info" icon="ti-wallet" text-center>
-          <BackgroundInfo />
+          <BackgroundInfo @updateData="updateData" />
         </TabContent>
         <TabContent title="People" icon="ti-user">
-          <PeoplePage ref="PeoplePage" />
+          <PeoplePage @updateMetrics="handleMetricsUpdate" />
         </TabContent>
         <TabContent title="Governance" icon="ti-shield">
-          <GovernancePage ref="GovernancePage" />
+          <GovernancePage @updateGovernanceMetrics="updateGovernanceMetrics" />
         </TabContent>
         <TabContent title="Planet" icon="ti-world">
-          <PlanetPage ref="PlanetPage" />
+          <PlanetPage @updatePlanetMetrics="updatePlanetMetrics" />
         </TabContent>
         <TabContent title="Prosperity" icon="ti-wallet">
-          <ProsperityPage ref="ProsperityPage" />
+          <ProsperityPage @updateProsperityMetrics="updateProsperityMetrics" />
         </TabContent>
         <TabContent title="Review and Submit" icon="ti-check-box">
           <table style="width: 100%; ">
@@ -105,6 +105,8 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+<button @click="onSubmitButtonClick">Submit</button>
+
 </template>
 
 <script>
@@ -139,7 +141,25 @@ export default {
       healthSafetyLevel: '',
       dialogVisible: false,
       checkbox: false,
-
+      firstName:'',
+      lastName:'',
+      startDate:'',
+      endDate:'',
+      ethicalBehaviorTraining: '',
+      previousYearCorruptionIncidents: '',
+      currentYearCorruptionIncidents: '',
+      greenhouseGasEmissions:'',
+      tcfdImplementation:'',
+      waterConsumptionInStressedAreas:'',
+      landUseEcologicalSensitivity:'',
+       totalTaxPaid: '',
+        newEmployees: '',
+        employeeTurnover: '',
+        economicContributionMetric: '',
+        totalRnDExpenses: '',
+        totalCapExDepreciation: '',
+        shareBuybacksDividends: '',
+        
     };
   },
 
@@ -189,11 +209,132 @@ export default {
         this.$router.push('/CreateNewReport');
       }
     },
+     onSubmitButtonClick(event) {
+    event.preventDefault();  
+    this.onComplete();
+  },
+    updateProsperityMetrics(metrics){
+    this.totalTaxPaid = metrics.find(m => m.Metric === 'Total tax paid').scoringAchieved;
+    this.newEmployees = metrics.find(m => m.Metric === 'Absolute number of new employees').scoringAchieved;
+    this.employeeTurnover = metrics.find(m => m.Metric === 'Absolute number of employee turnover').scoringAchieved;
+    this.economicContributionMetric = metrics.find(m => m.Metric === 'Economic Contribution').scoringAchieved;
+    this.totalRnDExpenses = metrics.find(m => m.Metric === 'Total R&D expenses ($)').scoringAchieved;
+    this.totalCapExDepreciation = metrics.find(m => m.Metric === 'Total capital expenditures (CapEx) Depreciation').scoringAchieved;
+    this.shareBuybacksDividends = metrics.find(m => m.Metric === 'Share buybacks + Dividend payments').scoringAchieved;
+},
+
+    updateGovernanceMetrics(metrics){
+        this.ethicalBehaviorTraining = metrics.find(m => m.Metric === 'Anti-corruption training').scoringAchieved;
+        this.previousYearCorruptionIncidents = metrics.find(m => m.Metric === 'Confirmed corruption incidents for previous year').scoringAchieved;
+        this.currentYearCorruptionIncidents = metrics.find(m => m.Metric === 'Confirmed corruption incidents in the current year').scoringAchieved;
+
+    },
+  updatePlanetMetrics(metrics) {
+    this.greenhouseGasEmissions = metrics.find(m => m.Metric === 'Greenhouse Gas (GHG) emissions').scoringAchieved;
+    this.tcfdImplementation = metrics.find(m => m.Metric === 'TCFD implementation').scoringAchieved;
+    this.waterConsumptionInStressedAreas = metrics.find(m => m.Metric === 'Water consumption and withdrawal in  water-stressed areas').scoringAchieved;
+    this.landUseEcologicalSensitivity = metrics.find(m => m.Metric === 'Land use and ecological sensitivity').scoringAchieved;
+     console.log("in update method");
+     console.log('Greenhouse Gas Emissions:', this.greenhouseGasEmissions);
+  console.log('TCFD Implementation:', this.tcfdImplementation);
+  console.log('Water Consumption in Stressed Areas:', this.waterConsumptionInStressedAreas);
+  console.log('Land Use Ecological Sensitivity:', this.landUseEcologicalSensitivity);
+},
     handleMetricsUpdate(metrics) {
       this.diversityInclusion = metrics.find(m => m.Metric === 'Diversity and Inclusion').scoringAchieved;
       this.payEquality = metrics.find(m => m.Metric === 'Pay equality').scoringAchieved;
       this.wageLevel = metrics.find(m => m.Metric === 'Wage Level').scoringAchieved;
       this.healthSafetyLevel = metrics.find(m => m.Metric === 'Rate of fatalities').scoringAchieved;
+    },
+    updateData(data){
+      this.firstName = data.firstName;
+      this.lastName = data.lastName;
+      this.startDate = data.startDate;
+      this.endDate = data.endDate;
+      
+    },
+  async saveProsperityMetrics() {
+    const token = localStorage.getItem('access_token');
+    const headers = {
+        'Authorization': 'Bearer ' + token
+    };
+    console.log("in saveProsperityMetrics method");
+    console.log('Total Tax Paid:', this.totalTaxPaid);
+    console.log('Absolute Number of New Employees:', this.newEmployees);
+    console.log('Absolute Number of Employee Turnover:', this.employeeTurnover);
+    console.log('Economic Contribution:', this.economicContributionMetric);
+    console.log('Total R&D Expenses:', this.totalRnDExpenses);
+    console.log('Total Capital Expenditures:', this.totalCapExDepreciation);
+    console.log('Share Buybacks + Dividend Payments:', this.shareBuybacksDividends);
+    
+    try {
+        const response = await axios.post(config.backendApiUrl.concat("/input_prosperitymetrics/" + this.$route.query.submissionID), {
+            TotalTaxPaid: this.totalTaxPaid,
+            AbsNumberOfNewEmps: this.newEmployees,
+            AbsNumberOfNewEmpTurnover: this.employeeTurnover,
+            EconomicContribution: this.economicContributionMetric,
+            TotalRNDExpenses: this.totalRnDExpenses,
+            TotalCapitalExpenditures: this.totalCapExDepreciation,
+            ShareBuyBacksAndDividendPayments: this.shareBuybacksDividends
+        }, { headers: headers });
+
+        if (response.data.success) {
+            console.log('Prosperity metrics saved successfully:', response.data.message);
+        } else {
+            console.error('Error saving prosperity metrics:', response.data.message);
+        }
+    } catch (error) {
+        console.error('Error saving prosperity metrics:', error.message);
+    }
+},
+
+async savePlanetMetrics() {
+    const token = localStorage.getItem('access_token');
+    const headers = {
+        'Authorization': 'Bearer ' + token
+    };
+    console.log("in savePlanetMetrics method");
+    console.log('Greenhouse Gas Emissions:', this.greenhouseGasEmissions);
+console.log('Water Consumption in Stressed Areas:', this.waterConsumptionInStressedAreas);
+console.log('Land Use Ecological Sensitivity:', this.landUseEcologicalSensitivity);
+    try {
+        const response = await axios.post(config.backendApiUrl.concat("/input_planetmetrics/" + this.$route.query.submissionID), {
+            GreenhouseGasEmission: this.greenhouseGasEmissions,
+            WaterConsumption: this.waterConsumptionInStressedAreas,
+            LandUse: this.landUseEcologicalSensitivity
+        }, { headers: headers });
+
+        if (response.data.success) {
+            console.log('Planet metrics saved successfully:', response.data.message);
+        } else {
+            console.error('Error saving planet metrics:', response.data.message);
+        }
+    } catch (error) {
+        console.error('Error saving planet metrics:', error.message);
+    }
+},
+
+   async saveGovernanceMetrics() {
+        const token = localStorage.getItem('access_token');
+        const headers = {
+            'Authorization': 'Bearer ' + token
+        };
+        console.log("in here")
+        try {
+            const response = await axios.post(config.backendApiUrl.concat("/input_governancemetrics/" + this.$route.query.submissionID), {
+                AntiCorruptionTraining: this.ethicalBehaviorTraining,
+                ConfirmedCorruptionIncidentPrev: this.previousYearCorruptionIncidents,
+                ConfirmedCorruptionIncidentCurrent: this.currentYearCorruptionIncidents
+            }, { headers: headers });
+
+            if (response.data.success) {
+                console.log('Governance metrics saved successfully:', response.data.message);
+            } else {
+                console.error('Error saving governance metrics:', response.data.message);
+            }
+        } catch (error) {
+            console.error('Error saving governance metrics:', error.message);
+        }
     },
     async savePeopleMetrics() {
       const token = localStorage.getItem('access_token');
@@ -220,18 +361,68 @@ export default {
       }
     },
 
-    onComplete() {
-  this.verifyCheckboxBeforeSubmit();
+ async saveReportInfo() {
+    const token = localStorage.getItem('access_token');
+    const headers = {
+        'Authorization': 'Bearer ' + token
+    };
 
-  if (!this.canSubmit) {
-    if(!this.checkbox){ return alert('Please tick the checkbox before proceeding.');
-  } else { this.$router.push({ name: 'SuccessPage' });}
-// Prevent submission
-  }
+    const dataToSend = {
+        FirstName: this.firstName,
+        LastName: this.lastName,
+        StartPeriod: this.startDate,
+        EndPeriod: this.endDate
+    };
+    console.log(this.firstName, this.lastName, this.startDate, this.endDate);
 
-   // Using named route
-  // or
-  // this.$router.push('/SuccessPage'); // Using path directly
+    console.log("Data being sent to the backend:", dataToSend);
+
+    try {
+        const response = await axios.post(
+            config.backendApiUrl.concat("/input_submission/" + this.$route.query.submissionID),
+            dataToSend,
+            { headers: headers }
+        );
+
+        if (response.data.success) {
+            console.log('Report info saved successfully:', response.data.message);
+        } else {
+            console.error('Error saving report info:', response.data.message);
+        }
+    } catch (error) {
+        console.error('Error saving report info:', error.message);
+    }
+}
+
+,
+
+   async onComplete() {
+    console.log("in submitting")
+    // Check the checkbox before proceeding
+    this.verifyCheckboxBeforeSubmit();
+    if (!this.canSubmit) {
+        if(!this.checkbox) {
+            return alert('Please tick the checkbox before proceeding.');
+        } 
+        
+    }
+
+    const token = localStorage.getItem('access_token');
+    const headers = {
+        'Authorization': 'Bearer ' + token
+    };
+    console.log("submitttting")
+    try {
+        const response = await axios.post(config.backendApiUrl.concat("/trans/" + this.$route.query.submissionID), {}, { headers: headers });
+
+        if (response.data.success) {
+            this.$router.push({ name: 'SuccessPage' });
+        } else {
+            alert(`Error: ${response.data.message}`);
+        }
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+    }
 },
 
 
@@ -242,22 +433,22 @@ export default {
       console.log('Navigating from', activeTabIndex, 'to', nextTabIndex);
       switch (activeTabIndex) {
         case 0: // Submission Info tab
-          // Handle any save or checks for this tab if necessary
+          this.saveReportInfo();
           break;
         case 1: // People tab
           this.savePeopleMetrics();
           break;
         case 2: // Governance tab
-          // Save data or checks related to the Governance tab
+          this.saveGovernanceMetrics();
           break;
         case 3: // Planet tab
-          // Save data or checks related to the Planet tab
+          this.savePlanetMetrics()
           break;
         case 4: // Prosperity tab
-          // Save data or checks related to the Prosperity tab
+          this.saveProsperityMetrics()
           break;
         case 5: // Review and Submit tab
-          // Save data or checks related to the Review and Submit tab
+         
           break;
       }
     },

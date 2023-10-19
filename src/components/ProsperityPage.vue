@@ -99,7 +99,7 @@ export default {
   name: 'ProsperityPage',
   data() {
     return {
-      allApplicable: 'false',
+      allApplicable: false,
       metrics: [
         {
           name: 'Community and social vitality',
@@ -163,9 +163,7 @@ export default {
       const govPayments = parseFloat(this.costs.GovernmentPayments) || 0;
       const communityInvestment = parseFloat(this.costs.CommunityInvestment) || 0;
       return revenue + govAssistance - (capPayments + govPayments + communityInvestment);
-
     },
-
 
     isEconomicContributionEnabled() {
       return this.metrics.some(
@@ -182,8 +180,6 @@ export default {
         return 'Partial';
       }
     },
-
-
   },
 
   watch: {
@@ -195,9 +191,14 @@ export default {
     },
 
     allApplicable(newValue) {
-      const applicable = newValue === 'false'
-      this.metrics.forEach(item => (item.isApplicable = applicable))
+      this.metrics.forEach(item => (item.isApplicable = !newValue));
+    },
 
+    metrics: {
+      deep: true,
+      handler() {
+        this.saveMetricsToParent();
+      }
     },
   },
 
@@ -206,12 +207,16 @@ export default {
       if (!item.isApplicable) {
         this.metrics[index].scoringAchieved = '';
       }
+    },
+
+    saveMetricsToParent() {
+      this.$emit('updateProsperityMetrics', this.metrics);
+      console.log(this.metrics);
     }
   }
-
-
 }
 </script>
+
 
 <style scoped> .scrollable-table {
    max-height: 400px;
