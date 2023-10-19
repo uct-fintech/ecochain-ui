@@ -23,7 +23,7 @@
           <ProsperityPage @updateProsperityMetrics="updateProsperityMetrics" />
         </TabContent>
         <TabContent title="Review and Submit" icon="ti-check-box">
-          <table style="width: 100%; ">
+          <table style="width: 100%; border-collapse: collapse;">
             <thead>
               <tr>
                 <td colspan="4">
@@ -44,7 +44,7 @@
               </tr>
               <tr>
                 <td colspan="4"><br>
-                  <table style="width: 100%;">
+                  <table style="width: 100%; border-collapse: collapse;">
                     <tbody>
                       <tr>
                         <td class="review-cell">Sections included in Submission</td>
@@ -54,19 +54,26 @@
                     <tbody>
                       <tr>
                         <td class="review-cell">People</td>
-                        <td class="review-cell">{{ getSectionStatus('PeoplePage') }}</td>
+                        <td class="review-cell">
+                          <div class="status-cell" :style="getCellStyle(getSectionStatus('PeoplePage'))">
+                          {{ getSectionStatus('PeoplePage') }}</div>
+                        </td>
                       </tr>
                       <tr>
                         <td class="review-cell">Planet</td>
-                        <td class="review-cell">{{ getSectionStatus('PlanetPage') }}</td>
+                        <td class="review-cell" >
+                          <div class="status-cell" :style="getCellStyle(getSectionStatus('PlanetPage'))">{{ getSectionStatus('PlanetPage') }}</div></td>
                       </tr>
                       <tr>
                         <td class="review-cell">Prosperity</td>
-                        <td class="review-cell">{{ getSectionStatus('ProsperityPage') }}</td>
+                        <td class="review-cell" >
+                          <div class="status-cell" :style="getCellStyle(getSectionStatus('ProsperityPage'))">{{ getSectionStatus('ProsperityPage') }}</div></td>
                       </tr>
                       <tr>
                         <td class="review-cell">Governance</td>
-                        <td class="review-cell">{{ getSectionStatus('GovernancePage') }}</td>
+                        <td class="review-cell" >
+                          <div class="status-cell" :style="getCellStyle(getSectionStatus('GovernancePage'))">{{ getSectionStatus('GovernancePage') }}</div>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -171,6 +178,24 @@ export default {
         return pageData.sectionStatus;
       }
       return 'N/A';
+    },
+    getCellStyle(condition) {
+      if (condition === 'Complete') {
+        return {
+          'color': 'green',
+          'background-color': 'lightgreen'
+        };
+      } else if (condition === 'Partial') {
+        return {
+          'color': 'yellow',
+          'background-color': 'lightyellow'
+        };
+      } else if (condition === 'Not Applicable') {
+        return {
+          'color': 'red',
+          'background-color': 'lightcoral'
+        };
+      }
     },
     async fetchDashboardData() {
       try {
@@ -486,5 +511,14 @@ console.log('Land Use Ecological Sensitivity:', this.landUseEcologicalSensitivit
 .review-cell {
   border-bottom: 1px solid rgba(128, 128, 128, 0.5);
   height: 45px;
+  padding: 15px;
+}
+
+.status-cell{
+  border-radius: 100px; 
+  align-items: center; 
+  display: inline-block; 
+  justify-content: center;
+
 }
 </style>
