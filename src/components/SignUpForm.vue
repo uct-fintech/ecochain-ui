@@ -84,7 +84,7 @@ export default {
 			},
 			userType: null,
 			valid: false,
-			OrganisationName: '',
+			Organisation_name: '',
 			email: '',
 			emailRules: [
 				value => (value ? true : 'Email is required.'),
