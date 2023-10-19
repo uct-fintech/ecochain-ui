@@ -56,23 +56,28 @@
                         <td class="review-cell">People</td>
                         <td class="review-cell">
                           <div class="status-cell" :style="getCellStyle(getSectionStatus('PeoplePage'))">
-                          {{ getSectionStatus('PeoplePage') }}</div>
+                            {{ getSectionStatus('PeoplePage') }}</div>
                         </td>
                       </tr>
                       <tr>
                         <td class="review-cell">Planet</td>
-                        <td class="review-cell" >
-                          <div class="status-cell" :style="getCellStyle(getSectionStatus('PlanetPage'))">{{ getSectionStatus('PlanetPage') }}</div></td>
+                        <td class="review-cell">
+                          <div class="status-cell" :style="getCellStyle(getSectionStatus('PlanetPage'))">{{
+                            getSectionStatus('PlanetPage') }}</div>
+                        </td>
                       </tr>
                       <tr>
                         <td class="review-cell">Prosperity</td>
-                        <td class="review-cell" >
-                          <div class="status-cell" :style="getCellStyle(getSectionStatus('ProsperityPage'))">{{ getSectionStatus('ProsperityPage') }}</div></td>
+                        <td class="review-cell">
+                          <div class="status-cell" :style="getCellStyle(getSectionStatus('ProsperityPage'))">{{
+                            getSectionStatus('ProsperityPage') }}</div>
+                        </td>
                       </tr>
                       <tr>
                         <td class="review-cell">Governance</td>
-                        <td class="review-cell" >
-                          <div class="status-cell" :style="getCellStyle(getSectionStatus('GovernancePage'))">{{ getSectionStatus('GovernancePage') }}</div>
+                        <td class="review-cell">
+                          <div class="status-cell" :style="getCellStyle(getSectionStatus('GovernancePage'))">{{
+                            getSectionStatus('GovernancePage') }}</div>
                         </td>
                       </tr>
                     </tbody>
@@ -82,14 +87,16 @@
             </tbody>
           </table><br>
 
-          <v-checkbox v-model="checkbox" color= "#219653">
-        <template v-slot:label>
-          <div>
-            By checking this box, I confirm that all metrics provided are accurate. I accept responsibility for any audit discrepancies. Upon submission, an email will be sent, the data will be blockchain-recorded, and an NFT will be minted. All actions are final and irreversible.
-          </div>
-        </template>
-      </v-checkbox>
-         
+          <v-checkbox v-model="checkbox" color="#219653">
+            <template v-slot:label>
+              <div>
+                By checking this box, I confirm that all metrics provided are accurate. I accept responsibility for any
+                audit discrepancies. Upon submission, an email will be sent, the data will be blockchain-recorded, and an
+                NFT will be minted. All actions are final and irreversible.
+              </div>
+            </template>
+          </v-checkbox>
+
         </TabContent>
       </div>
     </FormWizard>
@@ -108,12 +115,11 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color= "#219653"  text @click="dialogVisible = false">Okay</v-btn>
+        <v-btn color="#219653" text @click="dialogVisible = false">Okay</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
-<button @click="onSubmitButtonClick">Submit</button>
-
+  <button @click="onSubmitButtonClick">Submit</button>
 </template>
 
 <script>
@@ -148,25 +154,25 @@ export default {
       healthSafetyLevel: '',
       dialogVisible: false,
       checkbox: false,
-      firstName:'',
-      lastName:'',
-      startDate:'',
-      endDate:'',
+      firstName: '',
+      lastName: '',
+      startDate: '',
+      endDate: '',
       ethicalBehaviorTraining: '',
       previousYearCorruptionIncidents: '',
       currentYearCorruptionIncidents: '',
-      greenhouseGasEmissions:'',
-      tcfdImplementation:'',
-      waterConsumptionInStressedAreas:'',
-      landUseEcologicalSensitivity:'',
-       totalTaxPaid: '',
-        newEmployees: '',
-        employeeTurnover: '',
-        economicContributionMetric: '',
-        totalRnDExpenses: '',
-        totalCapExDepreciation: '',
-        shareBuybacksDividends: '',
-        
+      greenhouseGasEmissions: '',
+      tcfdImplementation: '',
+      waterConsumptionInStressedAreas: '',
+      landUseEcologicalSensitivity: '',
+      totalTaxPaid: '',
+      newEmployees: '',
+      employeeTurnover: '',
+      economicContributionMetric: '',
+      totalRnDExpenses: '',
+      totalCapExDepreciation: '',
+      shareBuybacksDividends: '',
+
     };
   },
 
@@ -234,132 +240,132 @@ export default {
         this.$router.push('/CreateNewReport');
       }
     },
-     onSubmitButtonClick(event) {
-    event.preventDefault();  
-    this.onComplete();
-  },
-    updateProsperityMetrics(metrics){
-    this.totalTaxPaid = metrics.find(m => m.Metric === 'Total tax paid').scoringAchieved;
-    this.newEmployees = metrics.find(m => m.Metric === 'Absolute number of new employees').scoringAchieved;
-    this.employeeTurnover = metrics.find(m => m.Metric === 'Absolute number of employee turnover').scoringAchieved;
-    this.economicContributionMetric = metrics.find(m => m.Metric === 'Economic Contribution').scoringAchieved;
-    this.totalRnDExpenses = metrics.find(m => m.Metric === 'Total R&D expenses ($)').scoringAchieved;
-    this.totalCapExDepreciation = metrics.find(m => m.Metric === 'Total capital expenditures (CapEx) Depreciation').scoringAchieved;
-    this.shareBuybacksDividends = metrics.find(m => m.Metric === 'Share buybacks + Dividend payments').scoringAchieved;
-},
+    onSubmitButtonClick(event) {
+      event.preventDefault();
+      this.onComplete();
+    },
+    updateProsperityMetrics(metrics) {
+      this.totalTaxPaid = metrics.find(m => m.Metric === 'Total tax paid').scoringAchieved;
+      this.newEmployees = metrics.find(m => m.Metric === 'Absolute number of new employees').scoringAchieved;
+      this.employeeTurnover = metrics.find(m => m.Metric === 'Absolute number of employee turnover').scoringAchieved;
+      this.economicContributionMetric = metrics.find(m => m.Metric === 'Economic Contribution').scoringAchieved;
+      this.totalRnDExpenses = metrics.find(m => m.Metric === 'Total R&D expenses ($)').scoringAchieved;
+      this.totalCapExDepreciation = metrics.find(m => m.Metric === 'Total capital expenditures (CapEx) Depreciation').scoringAchieved;
+      this.shareBuybacksDividends = metrics.find(m => m.Metric === 'Share buybacks + Dividend payments').scoringAchieved;
+    },
 
-    updateGovernanceMetrics(metrics){
-        this.ethicalBehaviorTraining = metrics.find(m => m.Metric === 'Anti-corruption training').scoringAchieved;
-        this.previousYearCorruptionIncidents = metrics.find(m => m.Metric === 'Confirmed corruption incidents for previous year').scoringAchieved;
-        this.currentYearCorruptionIncidents = metrics.find(m => m.Metric === 'Confirmed corruption incidents in the current year').scoringAchieved;
+    updateGovernanceMetrics(metrics) {
+      this.ethicalBehaviorTraining = metrics.find(m => m.Metric === 'Anti-corruption training').scoringAchieved;
+      this.previousYearCorruptionIncidents = metrics.find(m => m.Metric === 'Confirmed corruption incidents for previous year').scoringAchieved;
+      this.currentYearCorruptionIncidents = metrics.find(m => m.Metric === 'Confirmed corruption incidents in the current year').scoringAchieved;
 
     },
-  updatePlanetMetrics(metrics) {
-    this.greenhouseGasEmissions = metrics.find(m => m.Metric === 'Greenhouse Gas (GHG) emissions').scoringAchieved;
-    this.tcfdImplementation = metrics.find(m => m.Metric === 'TCFD implementation').scoringAchieved;
-    this.waterConsumptionInStressedAreas = metrics.find(m => m.Metric === 'Water consumption and withdrawal in  water-stressed areas').scoringAchieved;
-    this.landUseEcologicalSensitivity = metrics.find(m => m.Metric === 'Land use and ecological sensitivity').scoringAchieved;
-     console.log("in update method");
-     console.log('Greenhouse Gas Emissions:', this.greenhouseGasEmissions);
-  console.log('TCFD Implementation:', this.tcfdImplementation);
-  console.log('Water Consumption in Stressed Areas:', this.waterConsumptionInStressedAreas);
-  console.log('Land Use Ecological Sensitivity:', this.landUseEcologicalSensitivity);
-},
+    updatePlanetMetrics(metrics) {
+      this.greenhouseGasEmissions = metrics.find(m => m.Metric === 'Greenhouse Gas (GHG) emissions').scoringAchieved;
+      this.tcfdImplementation = metrics.find(m => m.Metric === 'TCFD implementation').scoringAchieved;
+      this.waterConsumptionInStressedAreas = metrics.find(m => m.Metric === 'Water consumption and withdrawal in  water-stressed areas').scoringAchieved;
+      this.landUseEcologicalSensitivity = metrics.find(m => m.Metric === 'Land use and ecological sensitivity').scoringAchieved;
+      console.log("in update method");
+      console.log('Greenhouse Gas Emissions:', this.greenhouseGasEmissions);
+      console.log('TCFD Implementation:', this.tcfdImplementation);
+      console.log('Water Consumption in Stressed Areas:', this.waterConsumptionInStressedAreas);
+      console.log('Land Use Ecological Sensitivity:', this.landUseEcologicalSensitivity);
+    },
     handleMetricsUpdate(metrics) {
       this.diversityInclusion = metrics.find(m => m.Metric === 'Diversity and Inclusion').scoringAchieved;
       this.payEquality = metrics.find(m => m.Metric === 'Pay equality').scoringAchieved;
       this.wageLevel = metrics.find(m => m.Metric === 'Wage Level').scoringAchieved;
       this.healthSafetyLevel = metrics.find(m => m.Metric === 'Rate of fatalities').scoringAchieved;
     },
-    updateData(data){
+    updateData(data) {
       this.firstName = data.firstName;
       this.lastName = data.lastName;
       this.startDate = data.startDate;
       this.endDate = data.endDate;
-      
+
     },
-  async saveProsperityMetrics() {
-    const token = localStorage.getItem('access_token');
-    const headers = {
+    async saveProsperityMetrics() {
+      const token = localStorage.getItem('access_token');
+      const headers = {
         'Authorization': 'Bearer ' + token
-    };
-    console.log("in saveProsperityMetrics method");
-    console.log('Total Tax Paid:', this.totalTaxPaid);
-    console.log('Absolute Number of New Employees:', this.newEmployees);
-    console.log('Absolute Number of Employee Turnover:', this.employeeTurnover);
-    console.log('Economic Contribution:', this.economicContributionMetric);
-    console.log('Total R&D Expenses:', this.totalRnDExpenses);
-    console.log('Total Capital Expenditures:', this.totalCapExDepreciation);
-    console.log('Share Buybacks + Dividend Payments:', this.shareBuybacksDividends);
-    
-    try {
+      };
+      console.log("in saveProsperityMetrics method");
+      console.log('Total Tax Paid:', this.totalTaxPaid);
+      console.log('Absolute Number of New Employees:', this.newEmployees);
+      console.log('Absolute Number of Employee Turnover:', this.employeeTurnover);
+      console.log('Economic Contribution:', this.economicContributionMetric);
+      console.log('Total R&D Expenses:', this.totalRnDExpenses);
+      console.log('Total Capital Expenditures:', this.totalCapExDepreciation);
+      console.log('Share Buybacks + Dividend Payments:', this.shareBuybacksDividends);
+
+      try {
         const response = await axios.post(config.backendApiUrl.concat("/input_prosperitymetrics/" + this.$route.query.submissionID), {
-            TotalTaxPaid: this.totalTaxPaid,
-            AbsNumberOfNewEmps: this.newEmployees,
-            AbsNumberOfNewEmpTurnover: this.employeeTurnover,
-            EconomicContribution: this.economicContributionMetric,
-            TotalRNDExpenses: this.totalRnDExpenses,
-            TotalCapitalExpenditures: this.totalCapExDepreciation,
-            ShareBuyBacksAndDividendPayments: this.shareBuybacksDividends
+          TotalTaxPaid: this.totalTaxPaid,
+          AbsNumberOfNewEmps: this.newEmployees,
+          AbsNumberOfNewEmpTurnover: this.employeeTurnover,
+          EconomicContribution: this.economicContributionMetric,
+          TotalRNDExpenses: this.totalRnDExpenses,
+          TotalCapitalExpenditures: this.totalCapExDepreciation,
+          ShareBuyBacksAndDividendPayments: this.shareBuybacksDividends
         }, { headers: headers });
 
         if (response.data.success) {
-            console.log('Prosperity metrics saved successfully:', response.data.message);
+          console.log('Prosperity metrics saved successfully:', response.data.message);
         } else {
-            console.error('Error saving prosperity metrics:', response.data.message);
+          console.error('Error saving prosperity metrics:', response.data.message);
         }
-    } catch (error) {
+      } catch (error) {
         console.error('Error saving prosperity metrics:', error.message);
-    }
-},
+      }
+    },
 
-async savePlanetMetrics() {
-    const token = localStorage.getItem('access_token');
-    const headers = {
+    async savePlanetMetrics() {
+      const token = localStorage.getItem('access_token');
+      const headers = {
         'Authorization': 'Bearer ' + token
-    };
-    console.log("in savePlanetMetrics method");
-    console.log('Greenhouse Gas Emissions:', this.greenhouseGasEmissions);
-console.log('Water Consumption in Stressed Areas:', this.waterConsumptionInStressedAreas);
-console.log('Land Use Ecological Sensitivity:', this.landUseEcologicalSensitivity);
-    try {
+      };
+      console.log("in savePlanetMetrics method");
+      console.log('Greenhouse Gas Emissions:', this.greenhouseGasEmissions);
+      console.log('Water Consumption in Stressed Areas:', this.waterConsumptionInStressedAreas);
+      console.log('Land Use Ecological Sensitivity:', this.landUseEcologicalSensitivity);
+      try {
         const response = await axios.post(config.backendApiUrl.concat("/input_planetmetrics/" + this.$route.query.submissionID), {
-            GreenhouseGasEmission: this.greenhouseGasEmissions,
-            WaterConsumption: this.waterConsumptionInStressedAreas,
-            LandUse: this.landUseEcologicalSensitivity
+          GreenhouseGasEmission: this.greenhouseGasEmissions,
+          WaterConsumption: this.waterConsumptionInStressedAreas,
+          LandUse: this.landUseEcologicalSensitivity
         }, { headers: headers });
 
         if (response.data.success) {
-            console.log('Planet metrics saved successfully:', response.data.message);
+          console.log('Planet metrics saved successfully:', response.data.message);
         } else {
-            console.error('Error saving planet metrics:', response.data.message);
+          console.error('Error saving planet metrics:', response.data.message);
         }
-    } catch (error) {
+      } catch (error) {
         console.error('Error saving planet metrics:', error.message);
-    }
-},
+      }
+    },
 
-   async saveGovernanceMetrics() {
-        const token = localStorage.getItem('access_token');
-        const headers = {
-            'Authorization': 'Bearer ' + token
-        };
-        console.log("in here")
-        try {
-            const response = await axios.post(config.backendApiUrl.concat("/input_governancemetrics/" + this.$route.query.submissionID), {
-                AntiCorruptionTraining: this.ethicalBehaviorTraining,
-                ConfirmedCorruptionIncidentPrev: this.previousYearCorruptionIncidents,
-                ConfirmedCorruptionIncidentCurrent: this.currentYearCorruptionIncidents
-            }, { headers: headers });
+    async saveGovernanceMetrics() {
+      const token = localStorage.getItem('access_token');
+      const headers = {
+        'Authorization': 'Bearer ' + token
+      };
+      console.log("in here")
+      try {
+        const response = await axios.post(config.backendApiUrl.concat("/input_governancemetrics/" + this.$route.query.submissionID), {
+          AntiCorruptionTraining: this.ethicalBehaviorTraining,
+          ConfirmedCorruptionIncidentPrev: this.previousYearCorruptionIncidents,
+          ConfirmedCorruptionIncidentCurrent: this.currentYearCorruptionIncidents
+        }, { headers: headers });
 
-            if (response.data.success) {
-                console.log('Governance metrics saved successfully:', response.data.message);
-            } else {
-                console.error('Error saving governance metrics:', response.data.message);
-            }
-        } catch (error) {
-            console.error('Error saving governance metrics:', error.message);
+        if (response.data.success) {
+          console.log('Governance metrics saved successfully:', response.data.message);
+        } else {
+          console.error('Error saving governance metrics:', response.data.message);
         }
+      } catch (error) {
+        console.error('Error saving governance metrics:', error.message);
+      }
     },
     async savePeopleMetrics() {
       const token = localStorage.getItem('access_token');
@@ -386,72 +392,72 @@ console.log('Land Use Ecological Sensitivity:', this.landUseEcologicalSensitivit
       }
     },
 
- async saveReportInfo() {
-    const token = localStorage.getItem('access_token');
-    const headers = {
+    async saveReportInfo() {
+      const token = localStorage.getItem('access_token');
+      const headers = {
         'Authorization': 'Bearer ' + token
-    };
+      };
 
-    const dataToSend = {
+      const dataToSend = {
         FirstName: this.firstName,
         LastName: this.lastName,
         StartPeriod: this.startDate,
         EndPeriod: this.endDate
-    };
-    console.log(this.firstName, this.lastName, this.startDate, this.endDate);
+      };
+      console.log(this.firstName, this.lastName, this.startDate, this.endDate);
 
-    console.log("Data being sent to the backend:", dataToSend);
+      console.log("Data being sent to the backend:", dataToSend);
 
-    try {
+      try {
         const response = await axios.post(
-            config.backendApiUrl.concat("/input_submission/" + this.$route.query.submissionID),
-            dataToSend,
-            { headers: headers }
+          config.backendApiUrl.concat("/input_submission/" + this.$route.query.submissionID),
+          dataToSend,
+          { headers: headers }
         );
 
         if (response.data.success) {
-            console.log('Report info saved successfully:', response.data.message);
+          console.log('Report info saved successfully:', response.data.message);
         } else {
-            console.error('Error saving report info:', response.data.message);
+          console.error('Error saving report info:', response.data.message);
         }
-    } catch (error) {
+      } catch (error) {
         console.error('Error saving report info:', error.message);
-    }
-}
-
-,
-
-   async onComplete() {
-    console.log("in submitting")
-    // Check the checkbox before proceeding
-    this.verifyCheckboxBeforeSubmit();
-    if (!this.canSubmit) {
-        if(!this.checkbox) {
-            return alert('Please tick the checkbox before proceeding.');
-        } 
-        
+      }
     }
 
-    const token = localStorage.getItem('access_token');
-    const headers = {
+    ,
+
+    async onComplete() {
+      console.log("in submitting")
+      // Check the checkbox before proceeding
+      this.verifyCheckboxBeforeSubmit();
+      if (!this.canSubmit) {
+        if (!this.checkbox) {
+          return alert('Please tick the checkbox before proceeding.');
+        }
+
+      }
+
+      const token = localStorage.getItem('access_token');
+      const headers = {
         'Authorization': 'Bearer ' + token
-    };
-    console.log("submitttting")
-    try {
+      };
+      console.log("submitttting")
+      try {
         const response = await axios.post(config.backendApiUrl.concat("/trans/" + this.$route.query.submissionID), {}, { headers: headers });
 
         if (response.data.success) {
-            this.$router.push({ name: 'SuccessPage' });
+          this.$router.push({ name: 'SuccessPage' });
         } else {
-            alert(`Error: ${response.data.message}`);
+          alert(`Error: ${response.data.message}`);
         }
-    } catch (error) {
+      } catch (error) {
         alert(`Error: ${error.message}`);
-    }
-},
+      }
+    },
 
 
-    
+
 
     beforeChange(activeTabIndex, nextTabIndex) {
       console.log('beforeChange function triggered')
@@ -473,7 +479,7 @@ console.log('Land Use Ecological Sensitivity:', this.landUseEcologicalSensitivit
           this.saveProsperityMetrics()
           break;
         case 5: // Review and Submit tab
-         
+
           break;
       }
     },
@@ -483,12 +489,12 @@ console.log('Land Use Ecological Sensitivity:', this.landUseEcologicalSensitivit
       if (!this.checkbox) {
         // Display a warning or notification about the unchecked checkbox
         alert('Please tick the checkbox before proceeding.');
-        return ;
+        return;
       }
 
     }
   }
-  };
+};
 
 </script>
 
@@ -514,11 +520,10 @@ console.log('Land Use Ecological Sensitivity:', this.landUseEcologicalSensitivit
   padding: 15px;
 }
 
-.status-cell{
-  border-radius: 100px; 
-  align-items: center; 
-  display: inline-block; 
+.status-cell {
+  border-radius: 100px;
+  align-items: center;
+  display: inline-block;
   justify-content: center;
 
-}
-</style>
+}</style>
