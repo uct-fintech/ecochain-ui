@@ -11,16 +11,16 @@
           <BackgroundInfo @updateData="updateData" />
         </TabContent>
         <TabContent title="People" icon="ti-user">
-          <PeoplePage @updateMetrics="handleMetricsUpdate" />
+          <PeoplePage ref="PeoplePage" @updateMetrics="handleMetricsUpdate" />
         </TabContent>
         <TabContent title="Governance" icon="ti-shield">
-          <GovernancePage @updateGovernanceMetrics="updateGovernanceMetrics" />
+          <GovernancePage ref="GovernancePage" @updateGovernanceMetrics="updateGovernanceMetrics" />
         </TabContent>
         <TabContent title="Planet" icon="ti-world">
-          <PlanetPage @updatePlanetMetrics="updatePlanetMetrics" />
+          <PlanetPage ref="PlanetPage" @updatePlanetMetrics="updatePlanetMetrics" />
         </TabContent>
         <TabContent title="Prosperity" icon="ti-wallet">
-          <ProsperityPage @updateProsperityMetrics="updateProsperityMetrics" />
+          <ProsperityPage ref="ProsperityPage" @updateProsperityMetrics="updateProsperityMetrics" />
         </TabContent>
         <TabContent title="Review and Submit" icon="ti-check-box">
           <table style="width: 100%; border-collapse: collapse;">
@@ -182,18 +182,18 @@ export default {
     getCellStyle(condition) {
       if (condition === 'Complete') {
         return {
-          'color': 'green',
-          'background-color': 'lightgreen'
+          'color': 'rgba(33, 150, 83, 1)',
+          'background-color': 'rgba(33, 150, 83, 0.08)'
         };
       } else if (condition === 'Partial') {
         return {
-          'color': 'yellow',
-          'background-color': 'lightyellow'
+          'color': 'rgba(255, 167, 11, 1)',
+          'background-color': 'rgba(255, 167, 11, 0.08)'
         };
       } else if (condition === 'Not Applicable') {
         return {
-          'color': 'red',
-          'background-color': 'lightcoral'
+          'color': 'rgba(211, 64, 83, 1)',
+          'background-color': 'rgba(211, 64, 83, 0.08)'
         };
       }
     },
