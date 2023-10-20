@@ -1,6 +1,10 @@
 <template>
 	<div>
 		<div class="auth-container">
+		<div v-if="isLoading" class="loading-container">
+                <v-progress-circular indeterminate></v-progress-circular>
+                <p>Signing Up...</p>
+            </div>
 			<div class="auth-branding">
 				<!-- Include your branding component here -->
 				<Authbranding />
@@ -96,6 +100,7 @@ export default {
 				value => !!value || 'Please type password.',
 				value => value.length >= 6 || 'Minimum 6 characters',
 			],
+			isLoading:false
 		};
 	},
 	components: {
@@ -110,49 +115,53 @@ export default {
 		},
 	},
 	methods: {
-        async submitForm() {
-            this.errors = [];  
+       async submitForm() {
+    this.errors = [];  
 
-            if (this.valid) {
-                console.log('Form is valid, proceed with submission');
-                try {
-                    const response = await axios.post(config.backendApiUrl.concat("/register"), {
-                        email: this.email,
-                        password: this.password,
-                        name: this.Organisation_name
-                    });
+    if (this.valid) {
+        this.isLoading = true;  // Show the spinner
 
-                    console.log('Response from backend:*********', response.data);
+        try {
+            const response = await axios.post(config.backendApiUrl.concat("/register"), {
+                email: this.email,
+                password: this.password,
+                name: this.Organisation_name
+            });
 
-                    if (response.data.success) {
-						localStorage.setItem('access_token', response.data.access_token);
-                        console.log("Attempting redirect...")
-                        this.$router.push('/organisation_form');
+            console.log('Response from backend:', response.data);
+
+            if (response.data.success) {
+                localStorage.setItem('access_token', response.data.access_token);
+                console.log("Attempting redirect...")
+                this.$router.push('/organisation_form');
+            } else {
+                console.error('Register failed:', response.data.message);
+                this.errors.push(response.data.message || "An error occurred during registration.");
+            }
+        } catch (error) {
+            if (error.response) {
+                if (error.response.data && error.response.data.message) {
+                    this.errors.push(error.response.data.message);
+                } else {
+                    if (error.response.status === 400) {
+                        this.errors.push("Invalid input. Please check your data and try again.");
+                    } else if (error.response.status === 409) {
+                        this.errors.push("Email already exists. Please use another one.");
                     } else {
-                        console.error('Register failed:', response.data.message);
-                        this.errors.push(response.data.message || "An error occurred during registration.");
-                    }
-                } catch (error) {
-                    if (error.response) {
-                        if (error.response.data && error.response.data.message) {
-                            this.errors.push(error.response.data.message);
-                        } else {
-                            if (error.response.status === 400) {
-                                this.errors.push("Invalid input. Please check your data and try again.");
-                            } else if (error.response.status === 409) {
-                                this.errors.push("Email already exists. Please use another one.");
-                            } else {
-                                this.errors.push("An error occurred while processing your request. Please try again later.");
-                            }
-                        }
-                    } else {
-                        this.errors.push("Network error. Please check your connection and try again.");
+                        this.errors.push("An error occurred while processing your request. Please try again later.");
                     }
                 }
             } else {
-                this.errors.push("Please ensure all fields are filled out correctly.");
+                this.errors.push("Network error. Please check your connection and try again.");
             }
+        } finally {
+            this.isLoading = false;  // Hide the spinner
         }
+    } else {
+        this.errors.push("Please ensure all fields are filled out correctly.");
+    }
+}
+
     },
 	
 };
@@ -189,6 +198,20 @@ export default {
   font-family: 'Abyssinica SIL', sans-serif;
 
 
+}
+
+.loading-container {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1000;
+	background-color: rgba(255, 255, 255, 0.7);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 }
 </style>
   

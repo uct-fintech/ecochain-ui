@@ -101,6 +101,11 @@
       </div>
     </FormWizard>
   </div>
+  <!-- Loading Spinner and Text -->
+<div v-if="loading" class="loading-container">
+  <div class="spinner"></div>
+  <p>Submitting your report and generating an ecochain NFT</p>
+</div>
 
 
   <v-dialog v-model="dialogVisible" max-width="700px">
@@ -176,6 +181,8 @@ export default {
       totalRnDExpenses: '',
       totalCapExDepreciation: '',
       shareBuybacksDividends: '',
+      loading: false
+
 
     };
   },
@@ -404,27 +411,41 @@ export default {
 
     ,
 
-    async onComplete() {
-      console.log("in submitting")
-      // Check the checkbox before proceeding
-      this.verifyCheckboxBeforeSubmit();
-      const token = localStorage.getItem('access_token');
-      const headers = {
-        'Authorization': 'Bearer ' + token
-      };
-      console.log("submitttting")
-      try {
-        const response = await axios.post(config.backendApiUrl.concat("/trans/" + this.$route.query.submissionID), {}, { headers: headers });
+   async onComplete() {
+  console.log("in submitting");
+  
+  // Check the checkbox before proceeding
+  this.verifyCheckboxBeforeSubmit();
+  if (!this.canSubmit) {
+    if (!this.checkbox) {
+      return alert('Please tick the checkbox before proceeding.');
+    }
+  }
 
-        if (response.data.success) {
-            this.$router.push({ name: 'SuccessPage',query: { submissionID: this.$route.query.submissionID } });
-        } else {
-          alert(`Error: ${response.data.message}`);
-        }
-      } catch (error) {
-        alert(`Error: ${error.message}`);
-      }
-    },
+  const token = localStorage.getItem('access_token');
+  const headers = {
+    'Authorization': 'Bearer ' + token
+  };
+
+  console.log("submitting");
+
+  this.loading = true; // Start the loading spinner
+
+  try {
+    const response = await axios.post(config.backendApiUrl.concat("/trans/" + this.$route.query.submissionID), {}, { headers: headers });
+
+    if (response.data.success) {
+      this.$router.push({ name: 'SuccessPage', query: { submissionID: this.$route.query.submissionID } });
+    } else {
+      alert(`Error: ${response.data.message}`);
+    }
+  } catch (error) {
+    alert(`Error: ${error.message}`);
+  } finally {
+    this.loading = false; // Stop the loading spinner regardless of success or error
+  }
+},
+
 
 
 
@@ -518,4 +539,37 @@ export default {
   display: inline-block;
   justify-content: center;
 
-}</style>
+}
+
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed; /* or 'absolute' depending on your layout needs */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8); /* semi-transparent white */
+  z-index: 1000; /* to ensure it's above other content */
+}
+
+.spinner {
+  border: 6px solid #f3f3f3; /* Light grey */
+  border-top: 6px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-right: 20px; /* Space between spinner and text */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+</style>
